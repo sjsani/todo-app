@@ -1,17 +1,18 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet, Text } from 'react-native';
-
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 interface AddButtonProps {
   onPress?: () => void;
 }
 
 const AddButton: React.FC<AddButtonProps> = ({ onPress }) => {
-  return (
-    <TouchableOpacity style={styles.button} onPress={()=>{
-      console.log("111")
-    }
 
-    }>
+  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  return (
+    <TouchableOpacity style={styles.button} onPress={()=>navigation.navigate("AddTask")}
+
+    >
       <Text style={styles.plus}>+</Text>
     </TouchableOpacity>
   );
