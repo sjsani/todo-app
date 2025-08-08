@@ -3,6 +3,7 @@ import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-nativ
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { Task } from '../types'; // adjust path
+import BackButton from '../components/BackButton';
 
 const EditTask = () => {
   const navigation = useNavigation();
@@ -31,6 +32,7 @@ const EditTask = () => {
 
   return (
     <View style={styles.container}>
+      <BackButton />
       <TextInput
         value={title}
         onChangeText={setTitle}
@@ -65,7 +67,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
     marginBottom: 20,
-    marginTop:50
+    marginTop:50,
+    top:50,
+    left:10,
+
   },
   descriptionInput: {
     fontSize: 18,
@@ -75,6 +80,8 @@ const styles = StyleSheet.create({
     padding: 10,
     minHeight: 100,
     textAlignVertical: 'top',
+    top:50,
+    marginBottom:20,
   },
   saveButton: {
     marginTop: 30,

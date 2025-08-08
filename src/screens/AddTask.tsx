@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { Task } from '../types'; // adjust path if needed
 import { Picker } from '@react-native-picker/picker';
+import BackButton from '../components/BackButton';
 
 const AddTaskScreen = () => {
   const navigation = useNavigation();
@@ -36,7 +37,7 @@ const AddTaskScreen = () => {
   };
 return(
   <View style={styles.container}>
-      {/* Top Yellow Bar */}
+      <BackButton />
       <View style={styles.header}>
         <Text style={styles.headerText}>New Task</Text>
       </View>

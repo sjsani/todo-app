@@ -16,19 +16,41 @@ const HomeScreen = ({  }) => {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const [tasks, setTasks] = useState<Task[]>([]);
   const isFocused = useIsFocused();
-
+  const [sortedTasks, setSortedTasks] = useState<Task[]>([]);
 
   useEffect(() => {
+  const sorted = [...tasks].sort((a, b) => {
+    if (a.completed !== b.completed) {
+      return a.completed ? 1 : -1;
+    }
+    const priorityOrder: Record<string, number> = { high: 1, medium: 2, low: 3 };
+    return priorityOrder[a.priority] - priorityOrder[b.priority];
+  });
+  setSortedTasks(sorted);
+}, [tasks]);
+  useEffect(() => {
     const loadTasks = async () => {
-      try {
-        const tasksJson = await AsyncStorage.getItem('tasks');
-        const tasks: Task[] = tasksJson ? JSON.parse(tasksJson) : [];
-        setTasks(tasks);
-      } catch (error) {
-        console.log('Error loading tasks:', error);
-      }
-    };
+  try {
+    const tasksJson = await AsyncStorage.getItem('tasks');
+    let loadedTasks: Task[] = tasksJson ? JSON.parse(tasksJson) : [];
 
+
+    loadedTasks.sort((a, b) => {
+
+      if (a.completed !== b.completed) {
+        return a.completed ? 1 : -1;
+      }
+
+
+      const priorityOrder: Record<string, number> = { high: 1, medium: 2, low: 3 };
+      return priorityOrder[a.priority] - priorityOrder[b.priority];
+    });
+
+    setTasks(loadedTasks);
+  } catch (error) {
+    console.log('Error loading tasks:', error);
+  }
+};
     if (isFocused) {
       loadTasks();
     }
@@ -111,8 +133,8 @@ const handleToggleComplete = async (task: Task) => {
         <Text style={styles.noTasksText}>No tasks made</Text>
       ) : (
         <FlatList
-          data={tasks}
-          keyExtractor={item => item.id}
+          data={sortedTasks}
+          keyExtractor={(item) => item.id}
           renderItem={renderItem}
           contentContainerStyle={styles.listContent}
         />
